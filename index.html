@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./style.css">
+	<title></title>
+</head>
+<body>
+    
+    <div class="container">
+        <h2>Phát Sinh Và Tính Toán</h2>
+        <form>
+            <div class="form-group">
+                Nhập số phần tử
+                <input type="number" id='input_so'>
+                <button type="button" id="btn">Phát sinh và tính toán</button>
+            </div>
+        </form>
+        <div id="ket_qua"></div>
+    </div>
+
+<script type="text/javascript">
+
+     let mang = [];
+    
+	function nhap(){
+        mang = [];
+        let so = parseInt(document.getElementById('input_so').value);
+        for(let i = 0; i < so ;i++){
+            mang.push(getRandomInt(20));
+        }
+		document.getElementById('input_so').value = '';
+	}
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+    function getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+    }
+	function in_ra() {
+		let chuoi = '';
+        let so_le = '';
+        let so_chan = '';
+		for(let i = 0; i < mang.length; i++){
+			chuoi += mang[i] + ' ';
+		}
+        for(let i = 0; i < mang.length; i++){
+			if( mang[i] % 2 === 0){
+                so_chan = so_chan + ' ' + mang[i];
+            }else{
+                so_le = so_le + ' ' + mang[i];
+            }
+		}
+		document.getElementById('ket_qua').innerHTML = `
+        <p> 
+            Dãy số: ${chuoi} </br>
+            Số chẵn: ${so_chan} </br>
+            Số lẽ: ${so_le} </br>
+            Tổng các phần tử trong mảng: ${tinh_tong(mang)} </br>
+            Các số nguyên tố trong mảng: ${tim_so_nguyen_to(mang)}</br>
+            Số lớn nhất trong mảng: ${tim_so_lon_nhat(mang)} </br>
+            Số nhỏ nhất trong mảng: ${tim_so_nho_nhat(mang)} </br>
+            Mã màu trong css: ${lay_ma_mau(mang.length)}
+        </p>`;
+	}
+    function tinh_tong(arr){
+        let tong = 0;
+        for(let i = 0; i < arr.length; i++){
+            tong += arr[i];
+		}
+        return tong;
+    }
+    function kiem_tra_so_nguyen_to(n){
+        if(n < 2){
+            return false;
+        }else{
+            for(let i = 2; i <= Math.sqrt(n); i++){
+			if(n % i === 0){
+                return false;
+            }
+		  }
+        }
+        return true;
+    }
+    function tim_so_nguyen_to(arr){
+        let so_nguyen_to = '';
+        for(let i = 0; i < arr.length-1; i++){
+			if( kiem_tra_so_nguyen_to(arr[i]) == true){
+                so_nguyen_to += arr[i] + ' ' ;
+            }
+		}
+        return so_nguyen_to;
+    }
+    function tim_so_lon_nhat(arr){
+        let arr1 = arr.sort(function(a, b){return a - b});
+        return arr1[arr1.length - 1];
+    }
+    function tim_so_nho_nhat(arr){
+        let arr1 = arr.sort(function(a, b){return a - b});
+        return arr1[0];
+    }
+    function lay_ma_mau(ma){
+        let mamau = "#000000";
+        let chieu_dai = ma.toString().length;
+        let mamau2 = mamau.slice(0,mamau.length-chieu_dai) + ma;
+        return mamau2;
+    }
+    const container = document.querySelector('.container');
+    const doc = document.getElementsByName('body');
+    const btn = document.querySelector('#btn');
+    btn.addEventListener('click',function(){
+        nhap();
+        container.querySelector('#ket_qua').classList.add('active');
+        if(mang.length === 0){
+            document.getElementById('ket_qua').innerHTML = `
+        <p> 
+           Vui lòng nhập nhập số!
+        </p>`;
+        } else{
+            in_ra();
+        }
+    });
+
+</script>
+</body>
+</html>
